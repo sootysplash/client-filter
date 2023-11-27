@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "clientfilter",
+	"version": "1.0",
+	"name": "Client filter",
+	"description": "A mod that filters your outgoing chat messages.",
+	"authors": [
+		"Sootysplash"
+	],
+	"license": "CC0-1.0",
+	"icon": "assets/clientfilter/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"me.sootysplash.Main"
+		]
+	},
+	"mixins": [
+		{
+			"config": "clientfilter.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.14.10",
+		"minecraft": "*",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
