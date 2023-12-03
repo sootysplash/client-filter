@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "clientfilter",
-	"version": "1.0",
+	"version": "1.0.1",
 	"name": "Client filter",
 	"description": "A mod that filters your outgoing chat messages.",
 	"authors": [
@@ -12,7 +12,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"me.sootysplash.Main"
+			"me.sootysplash.MainCF"
+		],
+		"modmenu": [
+			"me.sootysplash.ModMenuCF"
 		]
 	},
 	"mixins": [
