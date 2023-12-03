@@ -65,7 +65,6 @@ public class ChatMixin {
 					content = content.replace(blockedword.getLeft(), " ");
 					ClientSendMessageEvents.MODIFY_CHAT.invoker().modifySendChatMessage(content);
 				}
-				blockedword = null;
 			}
 		}
 		return content;
@@ -102,6 +101,14 @@ public class ChatMixin {
 			}
 
 			if (badwordsaid) {
+
+				if(configCF.debug && blockedword != null){
+					try{
+						MainCF.LOGGER.debug("Message: " + content + " Flagged word: " + blockedword.getLeft() + " Replacement word: " + blockedword.getRight());
+					}catch (Exception e){
+						MainCF.LOGGER.error("Error while outputting debug message: " + e);
+					}
+				}
 
 				if (configCF.warn) {
 					MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("[ChatFilter] Hey buddy, offensive words aren't the right way to release your anger."));
@@ -157,7 +164,6 @@ public class ChatMixin {
 					ClientSendMessageEvents.MODIFY_COMMAND.invoker().modifySendCommandMessage(command);
 
 				}
-				blockedword = null;
 			}
 		}
 		return command;
@@ -192,6 +198,15 @@ public class ChatMixin {
 			}
 
 			if (badwordsaid) {
+
+				if(configCF.debug && blockedword != null){
+					try {
+						MainCF.LOGGER.debug("Command: " + command + " Flagged word: " + blockedword.getLeft() + " Replacement word: " + blockedword.getRight());
+					}catch (Exception e){
+						MainCF.LOGGER.error("Error while outputting debug message: " + e);
+					}
+				}
+
 				if (configCF.warn) {
 					MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("[ChatFilter] Hey buddy, offensive words aren't the right way to release your anger."));
 				}
