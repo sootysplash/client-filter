@@ -159,12 +159,15 @@ public class MainCF implements ModInitializer {
 		return new Pair<>(left, right);
 	}
 	public static Pair[] getslur(){
+		// t slur, nword, c slur, f slur
 		return new Pair[]{pair("t[r5].[nm]{1,2}[^s]y?", "trans"), pair("n[^a ][g6]+[e3a@]r?", "..."), pair("ch[i1l!]nk", ".."), pair("f[a@][g6]{1,2}.?t?|bundle of stick", "gay")};
 	}
 	public static Pair[] getswear(){
+		// f word, b word, c word, s word, d word, a word, p word, p word
 		return new Pair[]{pair("f[u4o]?c?k", "screw"), pair("b[il!1]?[tc]{1,2}h", "jerk"), pair("c[4u]?nt", "jerk"), pair("sh[^ou]?r?t", "crud"), pair("d[i!l1]?c?k", "front"), pair("[a@][s$6]{2}", "tail"), pair("pu[s$6]{2}y?", "tail"), pair("p[1!li][s$6]{1,2}", "teed")};
 	}
 	public static Pair[] gettoxic(){
+		// kay why ess, keep yourself safe, ez, testword123
 		return new Pair[]{pair("k+ *y+ *[s\\\\u0024]+", "Love yourself"), pair("k.ll +[yu].{0,3}s.{1,2}f|keep yourself safe", "Live a long life"),  pair("e+z+p?+z?+|easy", "gg"), pair("testword123", "this is a test")};
 	}
 }
