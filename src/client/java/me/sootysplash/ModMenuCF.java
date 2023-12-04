@@ -96,10 +96,6 @@ public class ModMenuCF implements ModMenuApi {
                     .setSaveConsumer(newValue -> config.customList = newValue)
                     .build());
 
-
-
-
-
             return builder.build();
         };
     }

@@ -8,6 +8,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,7 +31,7 @@ public class ConfigCF implements ConfigData {
     public boolean swears = true;
     public boolean toxic = true;
     public boolean custom = false;
-    public List<String> customList;
+    public List<String> customList = new ArrayList<>();
 
     public void save() {
         try {
