@@ -24,8 +24,8 @@ public class ConfigCF implements ConfigData {
     public boolean outgoing = true;
     public boolean incoming = true;
     public boolean warn = true;
-    public String outResponse = "Replace";
-    public String inResponse = "Replace";
+    public String outResponse = "Substitute";
+    public String inResponse = "Substitute";
     public boolean debug = false;
     public boolean slurs = true;
     public boolean swears = true;

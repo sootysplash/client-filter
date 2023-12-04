@@ -106,7 +106,7 @@ public class MainCF implements ModInitializer {
 							MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("[ChatFilter] Hey buddy, offensive words aren't the right way to release your anger."));
 						}
 
-						if (configCF.outResponse.equals("Replace")) {
+						if (configCF.outResponse.equals("Substitute")) {
 							message = message.replace(blockedword.getLeft(), blockedword.getRight());
 						}
 
@@ -122,7 +122,7 @@ public class MainCF implements ModInitializer {
 
 					if(configCF.incoming && inputType.equals("Server") || inputType.equals("Game")){
 
-						if (configCF.inResponse.equals("Replace")) {
+						if (configCF.inResponse.equals("Substitute")) {
 							message = message.replace(blockedword.getLeft(), blockedword.getRight());
 						}
 

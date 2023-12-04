@@ -33,8 +33,8 @@ public class ModMenuCF implements ModMenuApi {
                     .build());
 
             handle.addEntry(cfghandle.startStringDropdownMenu(Text.of("Outgoing flagged message handling"), config.outResponse)
-                    .setDefaultValue("Replace")
-                    .setSelections(List.of("Replace", "Remove", "Cancel", "Off"))
+                    .setDefaultValue("Substitute")
+                    .setSelections(List.of("Substitute", "Remove", "Cancel", "Off"))
                     .setTooltip(Text.of("Response to outgoing (Client to Server) flagged messages"))
                     .setSaveConsumer(newValue -> config.outResponse = newValue)
                     .build());
@@ -52,8 +52,8 @@ public class ModMenuCF implements ModMenuApi {
                     .build());
 
             handle.addEntry(cfghandle.startStringDropdownMenu(Text.of("Incoming flagged message handling"), config.inResponse)
-                    .setDefaultValue("Replace")
-                    .setSelections(List.of("Replace", "Remove", "Cancel", "Off"))
+                    .setDefaultValue("Substitute")
+                    .setSelections(List.of("Substitute", "Remove", "Cancel", "Off"))
                     .setTooltip(Text.of("Response to incoming (Server to Client) flagged messages"))
                     .setSaveConsumer(newValue -> config.inResponse = newValue)
                     .build());
@@ -91,7 +91,7 @@ public class ModMenuCF implements ModMenuApi {
                     .setSaveConsumer(newValue -> config.custom = newValue)
                     .build());
 
-            filter.addEntry(cfgfilter.startStrList(Text.of("Custom"), config.customList)
+            filter.addEntry(cfgfilter.startStrList(Text.of("Custom word list"), config.customList)
                     .setTooltip(Text.of("Supports regex!"))
                     .setSaveConsumer(newValue -> config.customList = newValue)
                     .build());
