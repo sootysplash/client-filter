@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainCF implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -26,9 +28,6 @@ public class MainCF implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
 		AutoConfig.register(ConfigCF.class, GsonConfigSerializer::new);
 		LOGGER.info("ClientFilter has loaded | Sootysplash was here!");
 
@@ -36,34 +35,58 @@ public class MainCF implements ModInitializer {
 		ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> Filter(message.getString(), "Game"));
 		ClientSendMessageEvents.ALLOW_CHAT.register((message) -> Filter(message, "Client"));
 		ClientSendMessageEvents.ALLOW_COMMAND.register((command) -> Filter(command, "Command"));
-
 	}
 	public boolean Filter(String message, String inputType){
 
 		boolean theReturn = true;
 		int total = getslur().length + getswear().length + gettoxic().length;
 			for(int b = 0; b < total; b++) {
-				for (int t = 0; t < MainCF.getslur().length; t++) {
-					if (message.toLowerCase().contains(MainCF.getslur()[t].getLeft().toString())) {
-						badwordsaid = true;
-						blockedword = MainCF.getslur()[t];
-						t = MainCF.getslur().length;
+
+				if(configCF.slurs) {
+					for (int t = 0; t < MainCF.getslur().length; t++) {
+						Pattern pattern = Pattern.compile(MainCF.getslur()[t].getLeft().toString(), Pattern.CASE_INSENSITIVE);
+						Matcher matcher = pattern.matcher(message);
+						if (matcher.find()) {
+							badwordsaid = true;
+							blockedword = pair(matcher.group(), MainCF.getslur()[t].getRight().toString());
+							t = MainCF.getslur().length;
+						}
 					}
 				}
 
-				for (int t = 0; t < MainCF.getswear().length; t++) {
-					if (message.toLowerCase().contains(MainCF.getswear()[t].getLeft().toString())) {
-						badwordsaid = true;
-						blockedword = MainCF.getswear()[t];
-						t = MainCF.getswear().length;
+				if(configCF.swears) {
+					for (int t = 0; t < MainCF.getswear().length; t++) {
+						Pattern pattern = Pattern.compile(MainCF.getswear()[t].getLeft().toString(), Pattern.CASE_INSENSITIVE);
+						Matcher matcher = pattern.matcher(message);
+						if (matcher.find()) {
+							badwordsaid = true;
+							blockedword = pair(matcher.group(), MainCF.getswear()[t].getRight().toString());
+							t = MainCF.getswear().length;
+						}
 					}
 				}
 
-				for (int t = 0; t < MainCF.gettoxic().length; t++) {
-					if (message.toLowerCase().contains(MainCF.gettoxic()[t].getLeft().toString())) {
-						badwordsaid = true;
-						blockedword = MainCF.gettoxic()[t];
-						t = MainCF.gettoxic().length;
+				if(configCF.toxic) {
+					for (int t = 0; t < MainCF.gettoxic().length; t++) {
+						Pattern pattern = Pattern.compile(MainCF.gettoxic()[t].getLeft().toString(), Pattern.CASE_INSENSITIVE);
+						Matcher matcher = pattern.matcher(message);
+						if (matcher.find()) {
+							badwordsaid = true;
+							blockedword = pair(matcher.group(), MainCF.gettoxic()[t].getRight().toString());
+							t = MainCF.gettoxic().length;
+						}
+					}
+				}
+
+				if(configCF.custom){
+					for (int t = 0; t < configCF.customList.size(); t++) {
+						Pattern pattern = Pattern.compile(configCF.customList.get(t), Pattern.CASE_INSENSITIVE);
+						Matcher matcher = pattern.matcher(message);
+						if (matcher.find()) {
+							badwordsaid = true;
+							blockedword = pair(matcher.group(), "");
+							t = configCF.customList.size();
+						}
 					}
 				}
 
@@ -95,13 +118,6 @@ public class MainCF implements ModInitializer {
 							theReturn = false;
 						}
 						badwordsaid = false;
-
-						sentMessage = message;
-						if(inputType.equals("Command")){
-							Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatCommand(message);
-						}else if (inputType.equals("Client")){
-							Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatMessage(message);
-						}
 					}
 
 					if(configCF.incoming && inputType.equals("Server") || inputType.equals("Game")){
@@ -118,11 +134,24 @@ public class MainCF implements ModInitializer {
 							theReturn = false;
 						}
 						badwordsaid = false;
-						MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(message));
 					}
 				}
 			}
-		System.out.println("The return is: " +theReturn);
+			if(!theReturn) {
+				switch (inputType) {
+					case "Command" -> {
+						sentMessage = message;
+						Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatCommand(message);
+					}
+					case "Client" -> {
+						sentMessage = message;
+						Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatMessage(message);
+					}
+					case "Server", "Game" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(message));
+				}
+			}
+
+//		System.out.println("The return is: " +theReturn);
         return theReturn;
 	}
 
@@ -130,12 +159,12 @@ public class MainCF implements ModInitializer {
 		return new Pair<>(left, right);
 	}
 	public static Pair[] getslur(){
-		return new Pair[]{pair("tranny", "trans"), pair("nigg", "..."), pair("chink", "..."), pair("fag", "gay")};
+		return new Pair[]{pair("t[r5].[nm]{1,2}[^s]y?", "trans"), pair("n[^a][g6]+[e3a@]r?", "..."), pair("ch[i1l!]nk", ".."), pair("f[a@][g6]{1,2}.?t?|bundle of stick", "gay")};
 	}
 	public static Pair[] getswear(){
-		return new Pair[]{pair("fuck", "screw"), pair("bitch", "jerk"), pair("cunt", "jerk"), pair("shit", "crud")};
+		return new Pair[]{pair("f[u4o]?c?k", "screw"), pair("b[il!1]?[tc]{1,2}h", "jerk"), pair("c[4u]?nt", "jerk"), pair("sh[^ou]?r?t", "crud")};
 	}
 	public static Pair[] gettoxic(){
-		return new Pair[]{pair("kys", "..."), pair("ur dogshit", "..."), pair("kill ur", "..."), pair("ez", "gg"), pair("testword123", "this is a test")};
+		return new Pair[]{pair("k+ *y+ *[s\\\\u0024]+", "Love yourself"), pair("k.ll +[yu].{0,3}s.{1,2}f|keep yourself safe", "Live a long life"),  pair("e+z+p?+z?+|easy", "gg"), pair("testword123", "this is a test")};
 	}
 }
