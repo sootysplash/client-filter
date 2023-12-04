@@ -22,7 +22,7 @@ public class MainCF implements ModInitializer {
 	ConfigCF configCF = ConfigCF.getInstance();
 	boolean badwordsaid;
 	Pair<String, String> blockedword;
-	String sentMessage, sentCommand;
+	String sentMessage;
 
 	@Override
 	public void onInitialize() {
@@ -32,127 +32,17 @@ public class MainCF implements ModInitializer {
 		AutoConfig.register(ConfigCF.class, GsonConfigSerializer::new);
 		LOGGER.info("ClientFilter has loaded | Sootysplash was here!");
 
-		ClientReceiveMessageEvents.ALLOW_CHAT.register((message, signedMessage, sender, params, receptionTimestamp) -> {
+		ClientReceiveMessageEvents.ALLOW_CHAT.register((message, signedMessage, sender, params, receptionTimestamp) -> Filter(message.getString(), "Server"));
+		ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> Filter(message.getString(), "Game"));
+		ClientSendMessageEvents.ALLOW_CHAT.register((message) -> Filter(message, "Client"));
+		ClientSendMessageEvents.ALLOW_COMMAND.register((command) -> Filter(command, "Command"));
 
-//			System.out.println("Received");
-				if (configCF.incoming) {
-					for (int j = 0; j < MainCF.getslur().length; j++) {
-						if (message.toString().toLowerCase().contains(MainCF.getslur()[j].getLeft().toString())) {
-							badwordsaid = true;
-							blockedword = MainCF.getslur()[j];
-							j = MainCF.getslur().length;
-						}
-					}
+	}
+	public boolean Filter(String message, String inputType){
 
-					for (int j = 0; j < MainCF.getswear().length; j++) {
-						if (message.toString().toLowerCase().contains(MainCF.getswear()[j].getLeft().toString())) {
-							badwordsaid = true;
-							blockedword = MainCF.getswear()[j];
-							j = MainCF.getswear().length;
-						}
-					}
-
-					for (int j = 0; j < MainCF.gettoxic().length; j++) {
-						if (message.toString().toLowerCase().contains(MainCF.gettoxic()[j].getLeft().toString())) {
-							badwordsaid = true;
-							blockedword = MainCF.gettoxic()[j];
-							j = MainCF.gettoxic().length;
-						}
-					}
-
-					if (badwordsaid) {
-
-						if (configCF.debug) {
-							try {
-								MainCF.LOGGER.info("[DEBUG] Message: " + message + " Flagged word: " + blockedword.getLeft() + " Replacement word: " + blockedword.getRight());
-							} catch (Exception e) {
-								MainCF.LOGGER.error("Error while outputting debug message: " + e);
-							}
-						}
-
-						if (configCF.inResponse.equals("Replace")) {
-							message = Text.of(message.getString().replace(blockedword.getLeft(), blockedword.getRight()));
-							MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(message);
-						}
-
-						if (configCF.inResponse.equals("Remove")) {
-							message = Text.of(message.getString().replace(blockedword.getLeft(), " "));
-							MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(message);
-
-						}
-
-						if (!configCF.inResponse.equals("Off")) {
-							return false;
-						}
-						badwordsaid = false;
-					}
-				}
-			return true;
-
-		});
-
-		ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> {
-
-			System.out.println("Received game");
-			if (configCF.incoming) {
-				for (int j = 0; j < MainCF.getslur().length; j++) {
-					if (message.toString().toLowerCase().contains(MainCF.getslur()[j].getLeft().toString())) {
-						badwordsaid = true;
-						blockedword = MainCF.getslur()[j];
-						j = MainCF.getslur().length;
-					}
-				}
-
-				for (int j = 0; j < MainCF.getswear().length; j++) {
-					if (message.toString().toLowerCase().contains(MainCF.getswear()[j].getLeft().toString())) {
-						badwordsaid = true;
-						blockedword = MainCF.getswear()[j];
-						j = MainCF.getswear().length;
-					}
-				}
-
-				for (int j = 0; j < MainCF.gettoxic().length; j++) {
-					if (message.toString().toLowerCase().contains(MainCF.gettoxic()[j].getLeft().toString())) {
-						badwordsaid = true;
-						blockedword = MainCF.gettoxic()[j];
-						j = MainCF.gettoxic().length;
-					}
-				}
-
-				if (badwordsaid) {
-
-					if (configCF.debug) {
-						try {
-							MainCF.LOGGER.info("[DEBUG] Message: " + message + " Flagged word: " + blockedword.getLeft() + " Replacement word: " + blockedword.getRight());
-						} catch (Exception e) {
-							MainCF.LOGGER.error("Error while outputting debug message: " + e);
-						}
-					}
-
-					if (configCF.inResponse.equals("Replace")) {
-						message = Text.of(message.getString().replace(blockedword.getLeft(), blockedword.getRight()));
-						MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(message);
-					}
-
-					if (configCF.inResponse.equals("Remove")) {
-						message = Text.of(message.getString().replace(blockedword.getLeft(), " "));
-						MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(message);
-
-					}
-
-					if (!configCF.inResponse.equals("Off")) {
-						return false;
-					}
-					badwordsaid = false;
-				}
-			}
-			return true;
-		});
-
-		ClientSendMessageEvents.ALLOW_CHAT.register((message) -> {
-
-//			System.out.println("Sent");
-			if(configCF.outgoing && !message.equals(sentMessage)) {
+		boolean theReturn = true;
+		int total = getslur().length + getswear().length + gettoxic().length;
+			for(int b = 0; b < total; b++) {
 				for (int t = 0; t < MainCF.getslur().length; t++) {
 					if (message.toLowerCase().contains(MainCF.getslur()[t].getLeft().toString())) {
 						badwordsaid = true;
@@ -179,104 +69,61 @@ public class MainCF implements ModInitializer {
 
 				if (badwordsaid) {
 
-					if(configCF.debug){
-						try{
+					if (configCF.debug) {
+						try {
 							MainCF.LOGGER.info("[DEBUG] Message: " + message + " Flagged word: " + blockedword.getLeft() + " Replacement word: " + blockedword.getRight());
-						}catch (Exception e){
+						} catch (Exception e) {
 							MainCF.LOGGER.error("Error while outputting debug message: " + e);
 						}
 					}
 
-					if (configCF.warn) {
-						MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("[ChatFilter] Hey buddy, offensive words aren't the right way to release your anger."));
-					}
+					if(configCF.outgoing && !message.equals(sentMessage) && inputType.equals("Command") || inputType.equals("Client")) {
 
-					if (configCF.outResponse.equals("Replace")) {
-						message = message.replace(blockedword.getLeft(), blockedword.getRight());
+						if (configCF.warn) {
+							MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("[ChatFilter] Hey buddy, offensive words aren't the right way to release your anger."));
+						}
+
+						if (configCF.outResponse.equals("Replace")) {
+							message = message.replace(blockedword.getLeft(), blockedword.getRight());
+						}
+
+						if (configCF.outResponse.equals("Remove")) {
+							message = message.replace(blockedword.getLeft(), " ");
+						}
+
+						if (!configCF.outResponse.equals("Off")) {
+							theReturn = false;
+						}
+						badwordsaid = false;
+
 						sentMessage = message;
-						Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatMessage(message);
-					}
-
-					if (configCF.outResponse.equals("Remove")) {
-						message = message.replace(blockedword.getLeft(), " ");
-						sentMessage = message;
-						Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatMessage(message);
-					}
-
-					if (!configCF.outResponse.equals("Off")) {
-						return false;
-					}
-					badwordsaid = false;
-				}
-			}
-
-			return true;
-		});
-
-		ClientSendMessageEvents.ALLOW_COMMAND.register((command) -> {
-
-//			System.out.println("Commanded");
-			if(configCF.outgoing && !command.equals(sentCommand)) {
-				for (int t = 0; t < MainCF.getslur().length; t++) {
-					if (command.toLowerCase().contains(MainCF.getslur()[t].getLeft().toString())) {
-						badwordsaid = true;
-						blockedword = MainCF.getslur()[t];
-						t = MainCF.getslur().length;
-					}
-				}
-
-				for (int t = 0; t < MainCF.getswear().length; t++) {
-					if (command.toLowerCase().contains(MainCF.getswear()[t].getLeft().toString())) {
-						badwordsaid = true;
-						blockedword = MainCF.getswear()[t];
-						t = MainCF.getswear().length;
-					}
-				}
-
-				for (int t = 0; t < MainCF.gettoxic().length; t++) {
-					if (command.toLowerCase().contains(MainCF.gettoxic()[t].getLeft().toString())) {
-						badwordsaid = true;
-						blockedword = MainCF.gettoxic()[t];
-						t = MainCF.gettoxic().length;
-					}
-				}
-
-				if (badwordsaid) {
-
-					if(configCF.debug){
-						try{
-							MainCF.LOGGER.info("[DEBUG] Message: " + command + " Flagged word: " + blockedword.getLeft() + " Replacement word: " + blockedword.getRight());
-						}catch (Exception e){
-							MainCF.LOGGER.error("Error while outputting debug message: " + e);
+						if(inputType.equals("Command")){
+							Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatCommand(message);
+						}else if (inputType.equals("Client")){
+							Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatMessage(message);
 						}
 					}
 
-					if (configCF.warn) {
-						MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("[ChatFilter] Hey buddy, offensive words aren't the right way to release your anger."));
-					}
+					if(configCF.incoming && inputType.equals("Server") || inputType.equals("Game")){
 
-					if (configCF.outResponse.equals("Replace")) {
-						command = command.replace(blockedword.getLeft(), blockedword.getRight());
-						sentCommand = command;
-						Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatCommand(command);
-					}
+						if (configCF.inResponse.equals("Replace")) {
+							message = message.replace(blockedword.getLeft(), blockedword.getRight());
+						}
 
-					if (configCF.outResponse.equals("Remove")) {
-						command = command.replace(blockedword.getLeft(), " ");
-						sentCommand = command;
-						Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatCommand(command);
-					}
+						if (configCF.inResponse.equals("Remove")) {
+							message = message.replace(blockedword.getLeft(), " ");
+						}
 
-					if (!configCF.outResponse.equals("Off")) {
-						return false;
+						if (!configCF.inResponse.equals("Off")) {
+							theReturn = false;
+						}
+						badwordsaid = false;
+						MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(message));
 					}
-					badwordsaid = false;
 				}
 			}
-			return true;
-
-		});
-
+		System.out.println("The return is: " +theReturn);
+        return theReturn;
 	}
 
 	public static Pair pair(String left, String right){
