@@ -93,7 +93,7 @@ public class MainCF implements ModInitializer {
 
 		ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> {
 
-//			System.out.println("Received game");
+			System.out.println("Received game");
 			if (configCF.incoming) {
 				for (int j = 0; j < MainCF.getslur().length; j++) {
 					if (message.toString().toLowerCase().contains(MainCF.getslur()[j].getLeft().toString())) {
