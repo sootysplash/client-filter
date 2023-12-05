@@ -3,7 +3,7 @@
 	"id": "vitalium",
 	"version": "1.0.1",
 	"name": "Vitalium",
-	"description": "An advanced fully client sided Chat filter that: \n •Prevents mutes on servers \n •Removes flagged offensive words from the server \n •Is fully customizable with your own word list \n •Powered entirely by regex to prevent bypasses and false flags",
+	"description": "Vitalium is an advanced, fully client sided Chat filter that: \n •Prevents mutes on servers \n •Removes flagged offensive words from the server \n •Is fully customizable with your own word list \n •Powered entirely by regex to prevent bypasses and false flags",
 	"authors": [
 		"Sootysplash"
 	],
