@@ -7,7 +7,7 @@
 	"authors": [
 		"Sootysplash"
 	],
-	"license": "CC0-1.0",
+	"license": "Apache-2.0",
 	"icon": "assets/clientfilter/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -23,8 +23,5 @@
 		"minecraft": "*",
 		"java": ">=17",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }
