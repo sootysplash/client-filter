@@ -91,6 +91,7 @@ public class MainCF implements ModInitializer {
 					for (int t = 0; t < configCF.customList.size(); t++) {
 						String regex;
 						String response;
+						if(!(configCF.customList.get(t).charAt(0) == '~')) {
 						try {
 							regex = configCF.customList.get(t).substring(0, configCF.customList.get(t).indexOf("/") - 1);
 							response = configCF.customList.get(t).substring(configCF.customList.get(t).indexOf("/") + 1);
@@ -101,12 +102,14 @@ public class MainCF implements ModInitializer {
 							regex = configCF.customList.get(t);
 							response = "";
 						}
+
 						Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 						Matcher matcher = pattern.matcher(message);
-						if (matcher.find()) {
-							badwordsaid = true;
-							blockedword = pair(matcher.group(), response);
-							t = configCF.customList.size();
+							if (matcher.find()) {
+								badwordsaid = true;
+								blockedword = pair(matcher.group(), response);
+								t = configCF.customList.size();
+							}
 						}
 					}
 				}
@@ -123,7 +126,7 @@ public class MainCF implements ModInitializer {
 
 					if(configCF.outgoing && inputType.equals("Command") || inputType.equals("Client")) {
 
-						if (configCF.warn) {
+						if (!configCF.warn.isEmpty()) {
 							warn = true;
 						}
 
@@ -175,7 +178,7 @@ public class MainCF implements ModInitializer {
 				}
 			}
 		if(warn){
-			mc.inGameHud.getChatHud().addMessage(Text.of("[ChatFilter] Hey buddy, offensive words aren't the right way to release your anger."));
+			mc.inGameHud.getChatHud().addMessage(Text.of(configCF.warn));
 			warn = false;
 		}
 		if(warnSound){

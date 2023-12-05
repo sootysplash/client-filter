@@ -8,8 +8,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @me.shedaniel.autoconfig.annotation.Config(name = "ClientFilter")
@@ -23,7 +22,7 @@ public class ConfigCF implements ConfigData {
 
     public boolean outgoing = true;
     public boolean incoming = true;
-    public boolean warn = true;
+    public String warn = "[§l§o§4ChatFilter§r] Hey buddy, offensive words aren't the right way to release your anger.";
     public String outResponse = "Substitute";
     public String inResponse = "Substitute";
     public boolean debug = false;
@@ -33,7 +32,7 @@ public class ConfigCF implements ConfigData {
     public boolean custom = false;
     public boolean warnsound = true;
     public String inIcon = "ɤ";
-    public List<String> customList = new ArrayList<>();
+    public List<String> customList = List.of("balls /spheres", "~die /fall");
 
     public void save() {
         try {
