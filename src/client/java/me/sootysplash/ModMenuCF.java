@@ -39,7 +39,7 @@ public class ModMenuCF implements ModMenuApi {
                     .build());
 
             handle.addEntry(cfghandle.startStringDropdownMenu(Text.of("Outgoing warn message"), config.warn)
-                    .setDefaultValue("[§l§o§4ChatFilter§r] Hey buddy, offensive words aren't the right way to release your anger.")
+                    .setDefaultValue("[§l§o§4ChatFilter§r] Hey buddy, offensive words are not the right way to release your anger.")
                     .setTooltip(Text.of("Warn message sent for flagged outgoing (Client to Server) messages \n Leave blank to disable"))
                     .setSaveConsumer(newValue -> config.warn = newValue)
                     .build());

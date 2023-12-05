@@ -37,7 +37,6 @@ public class MainCF implements ModInitializer {
 			try{
 				return Filter(message.getString(), "Server", sender.getName());
 			}catch (Exception e){
-//				System.out.println("Error: "+e);
 				return Filter(message.getString(), "Server");
 			}
 		});
@@ -205,7 +204,9 @@ public class MainCF implements ModInitializer {
 				}
 			}
 		cancel = false;
-//		System.out.println("The return is: " +theReturn);
+		if(configCF.debug){
+			LOGGER.info("Cancelled message: "+ theReturn);
+		}
         return theReturn;
 	}
 	public boolean Filter(String message, String inputType){
@@ -217,11 +218,11 @@ public class MainCF implements ModInitializer {
 	}
 	public static Pair[] getslur(){
 		// t slur, nword, c slur, f slur
-		return new Pair[]{pair("t[r5].[nm]{1,2}[^s]y?", "trans"), pair("n[^a ][g6]+[e3a@]r?", "..."), pair("ch[i1l!]nk", ".."), pair("f +[a@] +[g6]{1,2}.?t?|bundle of stick", "gay")};
+		return new Pair[]{pair("t[r5].[nm]{1,2}[^s]y?", "trans"), pair("n[^a ][g6]+[e3a@]r?", "..."), pair("ch[i1l!]nk", ".."), pair("f *[a@] *[g6]{1,2}.?t?|bundle of stick", "gay")};
 	}
 	public static Pair[] getswear(){
 		// f word, b word, c word, s word, d word, a word/b word, p word, p word
-		return new Pair[]{pair("f[u4o]?c?k", "screw"), pair("b[il!1]?[tc]{1,2}h", "jerk"), pair("c[4u]?nt", "jerk"), pair("sh[^ou]?r?t", "crud"), pair("d[i!l1]?c?k", "front"), pair("[a@][s$6]{2}|butt", "tail"), pair("pu[s$6]{2}y?", "tail"), pair("p[1!li][s$6]{1,2}", "teed")};
+		return new Pair[]{pair("f[u4oa]?c?k", "screw"), pair("b[il!1]?[tc]{1,2}h", "jerk"), pair("c[4u]?nt", "jerk"), pair("sh[^ou]?r?t", "crud"), pair("d[i!l1]?c?k", "front"), pair("c[0o]ck", "front"), pair("[a@][s$6]{2}|butt", "tail"), pair("pu[s$6]{2}y?", "tail"), pair("p[1!li][s$6]{1,2}", "tee")};
 	}
 	public static Pair[] gettoxic(){
 		// kay why ess, keep yourself safe, your dog, ez, testword123

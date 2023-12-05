@@ -22,7 +22,7 @@ public class ConfigCF implements ConfigData {
 
     public boolean outgoing = true;
     public boolean incoming = true;
-    public String warn = "[§l§o§4ChatFilter§r] Hey buddy, offensive words aren't the right way to release your anger.";
+    public String warn = "[§l§o§4ChatFilter§r] Hey buddy, offensive words are not the right way to release your anger.";
     public String outResponse = "Substitute";
     public String inResponse = "Substitute";
     public boolean debug = false;
@@ -32,7 +32,7 @@ public class ConfigCF implements ConfigData {
     public boolean custom = false;
     public boolean warnsound = true;
     public String inIcon = "ɤ";
-    public List<String> customList = List.of("balls /spheres", "~die /fall");
+    public List<String> customList = List.of("~balls /spheres", "die /fall");
 
     public void save() {
         try {
