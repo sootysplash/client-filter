@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 
-@me.shedaniel.autoconfig.annotation.Config(name = "ClientFilter")
+@me.shedaniel.autoconfig.annotation.Config(name = "Vitalium")
 public class ConfigCF implements ConfigData {
 
     //Andy is the goat https://github.com/AndyRusso/pvplegacyutils/blob/main/src/main/java/io/github/andyrusso/pvplegacyutils/PvPLegacyUtilsConfig.java
@@ -30,7 +30,7 @@ public class ConfigCF implements ConfigData {
     public boolean swears = true;
     public boolean toxic = true;
     public boolean custom = false;
-    public boolean warnsound = true;
+    public boolean warnSound = true;
     public String inIcon = "ɤ";
     public List<String> customList = List.of("~balls /spheres", "die /fall");
 
@@ -38,7 +38,7 @@ public class ConfigCF implements ConfigData {
         try {
             Files.writeString(file, GSON.toJson(this));
         } catch (IOException e) {
-            MainCF.LOGGER.error("ClientFilter could not save the config.");
+            MainCF.LOGGER.error("Vitalium could not save the config.");
             throw new RuntimeException(e);
         }
     }
@@ -48,7 +48,7 @@ public class ConfigCF implements ConfigData {
             try {
                 instance = GSON.fromJson(Files.readString(file), ConfigCF.class);
             } catch (IOException exception) {
-                MainCF.LOGGER.warn("ClientFilter couldn't load the config, using defaults.");
+                MainCF.LOGGER.warn("Vitalium couldn't load the config, using defaults.");
                 instance = new ConfigCF();
             }
         }

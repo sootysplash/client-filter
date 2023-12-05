@@ -44,10 +44,10 @@ public class ModMenuCF implements ModMenuApi {
                     .setSaveConsumer(newValue -> config.warn = newValue)
                     .build());
 
-            handle.addEntry(cfghandle.startBooleanToggle(Text.of("Warning sound"), config.warnsound)
+            handle.addEntry(cfghandle.startBooleanToggle(Text.of("Warning sound"), config.warnSound)
                     .setDefaultValue(true)
                     .setTooltip(Text.of("Adds an auditory warning for flagged (Client to Server) messages"))
-                    .setSaveConsumer(newValue -> config.warnsound = newValue)
+                    .setSaveConsumer(newValue -> config.warnSound = newValue)
                     .build());
 
             handle.addEntry(cfghandle.startBooleanToggle(Text.of("Incoming"), config.incoming)

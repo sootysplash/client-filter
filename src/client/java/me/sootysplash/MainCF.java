@@ -21,7 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainCF implements ModInitializer {
-    public static final Logger LOGGER = LoggerFactory.getLogger("ClientFilter");
+	//INFO: ChatGPT came up with 'Vitalium'
+    public static final Logger LOGGER = LoggerFactory.getLogger("Vitalium");
 	ConfigCF configCF = ConfigCF.getInstance();
 	boolean badwordsaid, addIcon, warn, warnSound, cancel;
 	Pair<String, String> blockedword;
@@ -31,7 +32,7 @@ public class MainCF implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		AutoConfig.register(ConfigCF.class, GsonConfigSerializer::new);
-		LOGGER.info("ClientFilter has loaded | Sootysplash was here!");
+		LOGGER.info("Vitalium has loaded | Sootysplash was here!");
 
 		ClientReceiveMessageEvents.ALLOW_CHAT.register((message, signedMessage, sender, params, receptionTimestamp) -> {
 			try{
@@ -129,7 +130,7 @@ public class MainCF implements ModInitializer {
 							warn = true;
 						}
 
-						if(configCF.warnsound && mc.player != null){
+						if(configCF.warnSound && mc.player != null){
 							warnSound = true;
 						}
 						if(!message.equals(sentMessage)) {
