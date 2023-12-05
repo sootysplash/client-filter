@@ -41,8 +41,14 @@ public class ModMenuCF implements ModMenuApi {
 
             handle.addEntry(cfghandle.startBooleanToggle(Text.of("Outgoing warn"), config.warn)
                     .setDefaultValue(true)
-                    .setTooltip(Text.of("Warn for outgoing (Client to Server) messages"))
+                    .setTooltip(Text.of("Warn for flagged outgoing (Client to Server) messages"))
                     .setSaveConsumer(newValue -> config.warn = newValue)
+                    .build());
+
+            handle.addEntry(cfghandle.startBooleanToggle(Text.of("Warning sound"), config.warnsound)
+                    .setDefaultValue(true)
+                    .setTooltip(Text.of("Adds an auditory warning for flagged (Client to Server) messages"))
+                    .setSaveConsumer(newValue -> config.warnsound = newValue)
                     .build());
 
             handle.addEntry(cfghandle.startBooleanToggle(Text.of("Incoming"), config.incoming)
@@ -56,6 +62,12 @@ public class ModMenuCF implements ModMenuApi {
                     .setSelections(List.of("Substitute", "Remove", "Cancel", "Off"))
                     .setTooltip(Text.of("Response to incoming (Server to Client) flagged messages"))
                     .setSaveConsumer(newValue -> config.inResponse = newValue)
+                    .build());
+
+            handle.addEntry(cfghandle.startStringDropdownMenu(Text.of("Incoming flagged icon"), config.inIcon)
+                    .setDefaultValue("ɤ")
+                    .setTooltip(Text.of("Adds a small icon to (Server to Client) flagged messages to indicate filtering, leave blank to disable"))
+                    .setSaveConsumer(newValue -> config.inIcon = newValue)
                     .build());
 
             ConfigCategory filter = builder.getOrCreateCategory(Text.of("Filter"));
@@ -92,9 +104,10 @@ public class ModMenuCF implements ModMenuApi {
                     .build());
 
             filter.addEntry(cfgfilter.startStrList(Text.of("Custom word list"), config.customList)
-                    .setTooltip(Text.of("Supports regex!"))
+                    .setTooltip(Text.of("This list supports regex, separate patterns and response words with '/'"))
                     .setSaveConsumer(newValue -> config.customList = newValue)
                     .build());
+
 
             return builder.build();
         };

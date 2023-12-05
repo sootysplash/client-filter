@@ -31,6 +31,8 @@ public class ConfigCF implements ConfigData {
     public boolean swears = true;
     public boolean toxic = true;
     public boolean custom = false;
+    public boolean warnsound = true;
+    public String inIcon = "ɤ";
     public List<String> customList = new ArrayList<>();
 
     public void save() {
