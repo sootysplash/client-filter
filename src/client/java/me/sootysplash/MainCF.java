@@ -223,7 +223,7 @@ public class MainCF implements ModInitializer {
 	}
 	public static Pair[] getswear(){
 		// f word, b word, c word, s word, d word, a word/b word, p word, p word
-		return new Pair[]{pair("f[u4oa]?c?k", "screw"), pair("b[il!1]?[tc]{1,2}h", "jerk"), pair("c[4u]?nt", "jerk"), pair("sh[^ou]?r?t", "crud"), pair("d[i!l1]?c?k", "front"), pair("c[0o]ck", "front"), pair("[a@][s$6]{2}|butt", "tail"), pair("pu[s$6]{2}y?", "tail"), pair("p[1!li][s$6]{1,2}", "tee")};
+		return new Pair[]{pair("f[u4oa]?c?k", "screw"), pair("b[il!1]?[tc]{1,2}h", "jerk"), pair("c[4u]?nt", "jerk"), pair("sh[^ou ]?r?t", "crud"), pair("d[i!l1]?c?k", "front"), pair("c[0o]ck", "front"), pair("[a@][s$6]{2}|butt", "tail"), pair("pu[s$6]{2}y?", "tail"), pair("p[1!li][s$6]{1,2}", "tee")};
 	}
 	public static Pair[] gettoxic(){
 		// kay why ess, keep yourself safe, your dog, ez, testword123
