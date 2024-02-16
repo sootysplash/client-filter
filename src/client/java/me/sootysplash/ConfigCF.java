@@ -16,13 +16,13 @@ public class ConfigCF implements ConfigData {
 
     //Andy is the goat https://github.com/AndyRusso/pvplegacyutils/blob/main/src/main/java/io/github/andyrusso/pvplegacyutils/PvPLegacyUtilsConfig.java
 
-    private static final Path file = FabricLoader.getInstance().getConfigDir().resolve("ClientFilter.json");
+    private static final Path file = FabricLoader.getInstance().getConfigDir().resolve("Vitalium.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static ConfigCF instance;
 
     public boolean outgoing = true;
     public boolean incoming = true;
-    public String warn = "[§l§o§4ChatFilter§r] Hey buddy, offensive words are not the right way to release your anger.";
+    public String warn = "[§l§o§4Vitalium§r] Hey buddy, offensive words are not the right way to release your anger.";
     public String outResponse = "Substitute";
     public String inResponse = "Substitute";
     public boolean debug = false;

@@ -35,11 +35,11 @@ public class MainCF implements ModInitializer {
 		LOGGER.info("Vitalium has loaded | Sootysplash was here!");
 
 		ClientReceiveMessageEvents.ALLOW_CHAT.register((message, signedMessage, sender, params, receptionTimestamp) -> {
-			try{
-				return Filter(message.getString(), "Server", sender.getName());
-			}catch (Exception e){
-				return Filter(message.getString(), "Server");
-			}
+				if(sender != null) {
+					return Filter(message.getString(), "Server", sender.getName());
+				}else{
+					return Filter(message.getString(), "Server");
+				}
 		});
 		ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> Filter(message.getString(), "Game"));
 		ClientSendMessageEvents.ALLOW_CHAT.register((message) -> Filter(message, "Client"));
@@ -53,11 +53,11 @@ public class MainCF implements ModInitializer {
 
 				if(configCF.slurs) {
 					for (int t = 0; t < MainCF.getslur().length; t++) {
-						Pattern pattern = Pattern.compile(MainCF.getslur()[t].getLeft().toString(), Pattern.CASE_INSENSITIVE);
+						Pattern pattern = Pattern.compile(MainCF.getslur()[t].getLeft(), Pattern.CASE_INSENSITIVE);
 						Matcher matcher = pattern.matcher(message);
 						if (matcher.find()) {
 							badwordsaid = true;
-							blockedword = pair(matcher.group(), MainCF.getslur()[t].getRight().toString());
+							blockedword = pair(matcher.group(), MainCF.getslur()[t].getRight());
 							t = MainCF.getslur().length;
 						}
 					}
@@ -65,11 +65,11 @@ public class MainCF implements ModInitializer {
 
 				if(configCF.swears) {
 					for (int t = 0; t < MainCF.getswear().length; t++) {
-						Pattern pattern = Pattern.compile(MainCF.getswear()[t].getLeft().toString(), Pattern.CASE_INSENSITIVE);
+						Pattern pattern = Pattern.compile(MainCF.getswear()[t].getLeft(), Pattern.CASE_INSENSITIVE);
 						Matcher matcher = pattern.matcher(message);
 						if (matcher.find()) {
 							badwordsaid = true;
-							blockedword = pair(matcher.group(), MainCF.getswear()[t].getRight().toString());
+							blockedword = pair(matcher.group(), MainCF.getswear()[t].getRight());
 							t = MainCF.getswear().length;
 						}
 					}
@@ -77,11 +77,11 @@ public class MainCF implements ModInitializer {
 
 				if(configCF.toxic) {
 					for (int t = 0; t < MainCF.gettoxic().length; t++) {
-						Pattern pattern = Pattern.compile(MainCF.gettoxic()[t].getLeft().toString(), Pattern.CASE_INSENSITIVE);
+						Pattern pattern = Pattern.compile(MainCF.gettoxic()[t].getLeft(), Pattern.CASE_INSENSITIVE);
 						Matcher matcher = pattern.matcher(message);
 						if (matcher.find()) {
 							badwordsaid = true;
-							blockedword = pair(matcher.group(), MainCF.gettoxic()[t].getRight().toString());
+							blockedword = pair(matcher.group(), MainCF.gettoxic()[t].getRight());
 							t = MainCF.gettoxic().length;
 						}
 					}
@@ -154,7 +154,7 @@ public class MainCF implements ModInitializer {
 						}
 					}
 
-					if(configCF.incoming && !sender.equals(mc.player.getEntityName()) && inputType.equals("Server") || inputType.equals("Game")){
+					if(configCF.incoming && mc.player != null && !sender.equals(mc.player.getEntityName()) && inputType.equals("Server") || inputType.equals("Game")){
 
 						if (configCF.inResponse.equals("Substitute")) {
 							message = message.replace(blockedword.getLeft(), blockedword.getRight());
@@ -181,7 +181,7 @@ public class MainCF implements ModInitializer {
 			mc.inGameHud.getChatHud().addMessage(Text.of(configCF.warn));
 			warn = false;
 		}
-		if(warnSound){
+		if(warnSound && mc.player != null){
 			new PlaySoundS2CPacket(RegistryEntry.of(SoundEvents.ENTITY_GHAST_HURT), SoundCategory.MASTER, mc.player.getX(), mc.player.getY(), mc.player.getZ(), 1f, 1f, System.currentTimeMillis()).apply(mc.getNetworkHandler());
 			warnSound = false;
 		}
@@ -214,18 +214,18 @@ public class MainCF implements ModInitializer {
 		return Filter(message, inputType, "");
 	}
 
-	public static Pair pair(String left, String right){
+	public static Pair<String, String> pair(String left, String right){
 		return new Pair<>(left, right);
 	}
-	public static Pair[] getslur(){
+	public static Pair<String, String>[] getslur(){
 		// t slur, nword, c slur, f slur
 		return new Pair[]{pair("t[r5].[nm]{1,2}[^s]y?", "trans"), pair("n[^a ][g6]+[e3a@]r?", "..."), pair("ch[i1l!]nk", ".."), pair("f *[a@] *[g6]{1,2}.?t?|bundle of stick", "gay")};
 	}
-	public static Pair[] getswear(){
+	public static Pair<String, String>[] getswear(){
 		// f word, b word, c word, s word, d word, a word/b word, p word, p word
 		return new Pair[]{pair("f[u4oa]?c?k", "screw"), pair("b[il!1]?[tc]{1,2}h", "jerk"), pair("c[4u]?nt", "jerk"), pair("sh[^ou ]?r?t", "crud"), pair("d[i!l1]?c?k", "front"), pair("c[0o]ck", "front"), pair("[a@][s$6]{2}|butt", "tail"), pair("pu[s$6]{2}y?", "tail"), pair("p[1!li][s$6]{1,2}", "tee")};
 	}
-	public static Pair[] gettoxic(){
+	public static Pair<String, String>[] gettoxic(){
 		// kay why ess, keep yourself safe, your dog, ez, testword123
 		return new Pair[]{pair("k+ *y+ *[s\\\\u0024]+", "love yourself"), pair("k.ll +[yu].{0,3}s.{1,2}f|keep yourself safe", "live a long life"), pair("y?[o0]?ure? ?d?[o0]?g?sh[^ou]?r?t|y?[o0]?ure? ?d?[o0]?g?crud", "you're good"),  pair("e+z+p?+z?+|easy", "gg"), pair("testword123", "this is a test")};
 	}
