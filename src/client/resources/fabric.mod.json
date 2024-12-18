@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "vitalium",
+	"version": "1.0.1",
+	"name": "Vitalium",
+	"description": "Vitalium is an advanced, fully client sided Chat filter that: \n •Prevents mutes on servers \n •Removes flagged offensive words from the server \n •Is fully customizable with your own word list \n •Powered entirely by regex to prevent bypasses and false flags",
+	"authors": [
+		"Sootysplash"
+	],
+	"contact": {
+		"homepage": "https://github.com/sootysplash",
+		"sources": "https://github.com/sootysplash/server-sorter"
+	},
+	"license": "Apache-2.0",
+	"icon": "assets/vitalium/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"me.sootysplash.MainCF"
+		],
+		"modmenu": [
+			"me.sootysplash.ModMenuCF"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.14.10",
+		"minecraft": ">=1.19.3",
+		"java": ">=17",
+		"fabric-api": "*"
+	}
+}
